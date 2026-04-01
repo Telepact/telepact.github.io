@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Get Started | Telepact</title>
+  <meta name="description" content="Get started with Telepact for servers and clients, with practical code snippets for both paths.">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav-shell">
+      <a href="/" class="brand" aria-label="Telepact home">
+        <span class="brand-dot"></span>
+        <span>Telepact</span>
+      </a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="/index.html">Home</a>
+        <a href="/get-started.html" class="active">Get Started</a>
+        <a href="/why-telepact.html">Why Telepact</a>
+        <a href="/schema-guide.html">Schema Guide</a>
+        <a href="/ecosystem.html">Ecosystem</a>
+        <a href="/faq.html">FAQ</a>
+      </nav>
+      <a class="btn btn-small" href="https://github.com/telepact/telepact" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero container">
+      <p class="eyebrow" data-reveal>Get Started</p>
+      <h1 data-reveal>Choose your path: server or client.</h1>
+      <p class="hero-copy" data-reveal>
+        Telepact is designed so servers own the API schema and enforce compliance, while clients can start with plain JSON and optionally opt in to richer Telepact tooling.
+      </p>
+    </section>
+
+    <section class="section container">
+      <div class="path-switch" data-path-switch data-reveal>
+        <div class="path-buttons" role="tablist" aria-label="Get started paths">
+          <button type="button" class="path-button is-active" data-path-button="server" role="tab" aria-selected="true" aria-controls="path-server">For Servers</button>
+          <button type="button" class="path-button" data-path-button="client" role="tab" aria-selected="false" aria-controls="path-client">For Clients</button>
+        </div>
+
+        <section id="path-server" class="path-panel is-active" data-path-panel="server" role="tabpanel">
+          <h2>For Servers</h2>
+          <p>
+            The Telepact API schema is drafted and owned by the server. You define your <code>*.telepact.json</code> schema, serve requests with a Telepact library, and the library performs request/response validation against your schema.
+          </p>
+          <p>
+            Current server library options: TypeScript, Python, Java, and Go.
+          </p>
+          <div class="pill-grid compact">
+            <span>TypeScript</span>
+            <span>Python</span>
+            <span>Java</span>
+            <span>Go</span>
+          </div>
+
+          <div class="code-layout two-up">
+            <article class="code-card">
+              <header>
+                <h3>1) Draft your schema</h3>
+                <button type="button" class="copy-btn" data-copy-target="gs-server-schema">Copy</button>
+              </header>
+              <pre><code id="gs-server-schema">[
+  {
+    "fn.divide": {
+      "x": "integer",
+      "y": "integer"
+    },
+    "->": [
+      { "Ok_": { "result": "number" } },
+      { "ErrorCannotDivideByZero": {} }
+    ]
+  }
+]</code></pre>
+            </article>
+
+            <article class="code-card">
+              <header>
+                <h3>2) Serve it (Python example)</h3>
+                <button type="button" class="copy-btn" data-copy-target="gs-server-py">Copy</button>
+              </header>
+              <pre><code id="gs-server-py">from telepact import TelepactSchemaFiles, TelepactSchema, Server, Message
+
+schema_files = TelepactSchemaFiles("./api")
+api = TelepactSchema.from_file_json_map(schema_files.filenames_to_json)
+
+async def handler(req_msg):
+    fn = req_msg.get_body_target()
+    args = req_msg.body[fn]
+    if fn == "fn.divide":
+        x = args["x"]
+        y = args["y"]
+        if y == 0:
+            return Message({}, {"ErrorCannotDivideByZero": {}})
+        return Message({}, {"Ok_": {"result": x / y}})
+
+server = Server(api, handler, Server.Options())
+# server.process(request_bytes) validates request and response against schema</code></pre>
+            </article>
+          </div>
+
+          <p class="quick-links">
+            Language-specific server docs:
+            <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/ts.md" target="_blank" rel="noopener noreferrer">TypeScript</a>,
+            <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/py.md" target="_blank" rel="noopener noreferrer">Python</a>,
+            <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/java.md" target="_blank" rel="noopener noreferrer">Java</a>,
+            <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/go.md" target="_blank" rel="noopener noreferrer">Go</a>.
+          </p>
+        </section>
+
+        <section id="path-client" class="path-panel" data-path-panel="client" role="tabpanel">
+          <h2>For Clients</h2>
+          <p>
+            No Telepact client library is required. A client can connect to the server's transport and send JSON payloads with any preferred JSON/network library.
+          </p>
+          <p>
+            Clients can also opt in to Telepact libraries for improved type safety, code generation workflows, and binary encodings.
+          </p>
+
+          <div class="code-layout two-up">
+            <article class="code-card">
+              <header>
+                <h3>1) Plain JSON client (no library)</h3>
+                <button type="button" class="copy-btn" data-copy-target="gs-client-json">Copy</button>
+              </header>
+              <pre><code id="gs-client-json">const request = [
+  {},
+  {
+    "fn.divide": {
+      x: 6,
+      y: 3,
+    }
+  }
+];
+
+const response = await fetch("http://localhost:8000/api/telepact", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(request),
+});
+
+console.log(await response.json());
+// -> [{}, {"Ok_": {"result": 2}}]</code></pre>
+            </article>
+
+            <article class="code-card">
+              <header>
+                <h3>2) Optional Telepact client</h3>
+                <button type="button" class="copy-btn" data-copy-target="gs-client-lib">Copy</button>
+              </header>
+              <pre><code id="gs-client-lib">import { Client, ClientOptions, Message } from "telepact";
+
+const adapter = async (m, serializer) => {
+  const requestBytes = serializer.serialize(m);
+  const responseBytes = await transport.send(requestBytes);
+  return serializer.deserialize(responseBytes);
+};
+
+const client = new Client(adapter, new ClientOptions());
+const response = await client.request(
+  new Message({}, { "fn.divide": { x: 6, y: 3 } })
+);
+
+if (response.getBodyTarget() === "Ok_") {
+  console.log(response.getBodyPayload().result);
+}</code></pre>
+            </article>
+          </div>
+
+          <p class="quick-links">
+            Optional tooling for client workflows:
+            <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/cli.md" target="_blank" rel="noopener noreferrer">CLI</a>,
+            <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/console.md" target="_blank" rel="noopener noreferrer">Browser Console</a>,
+            <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/prettier.md" target="_blank" rel="noopener noreferrer">Prettier Plugin</a>.
+          </p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-shell">
+      <p>Telepact is open source under Apache License 2.0.</p>
+      <p><span id="year"></span> Telepact contributors.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

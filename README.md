@@ -1,6 +1,15 @@
 # Telepact GitHub Pages Site
 
-Static marketing site for the open-source Telepact project.
+Static multi-page marketing and docs site for the open-source Telepact project.
+
+## Pages
+
+- `index.html`: project overview and entry points
+- `get-started.html`: server/client onboarding paths with code snippets
+- `why-telepact.html`: principles, comparisons, and tradeoffs
+- `schema-guide.html`: schema model and definition patterns
+- `ecosystem.html`: language libraries and tooling
+- `faq.html`: common design questions
 
 ## Local preview
 
@@ -10,7 +19,7 @@ From the repository root:
 python3 -m http.server 8000
 ```
 
-Then open `http://localhost:8000`.
+Then open [http://localhost:8000](http://localhost:8000).
 
 ## Deploy to GitHub Pages
 

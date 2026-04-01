@@ -46,3 +46,34 @@ copyButtons.forEach((button) => {
     }
   });
 });
+
+const pathSwitchers = document.querySelectorAll("[data-path-switch]");
+pathSwitchers.forEach((switcher) => {
+  const buttons = switcher.querySelectorAll("[data-path-button]");
+  const panels = switcher.querySelectorAll("[data-path-panel]");
+  if (buttons.length === 0 || panels.length === 0) return;
+
+  const setActivePath = (path) => {
+    buttons.forEach((button) => {
+      const isActive = button.getAttribute("data-path-button") === path;
+      button.classList.toggle("is-active", isActive);
+      button.setAttribute("aria-selected", String(isActive));
+    });
+
+    panels.forEach((panel) => {
+      const isActive = panel.getAttribute("data-path-panel") === path;
+      panel.classList.toggle("is-active", isActive);
+    });
+  };
+
+  const initialPath = buttons[0].getAttribute("data-path-button");
+  if (initialPath) setActivePath(initialPath);
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const path = button.getAttribute("data-path-button");
+      if (!path) return;
+      setActivePath(path);
+    });
+  });
+});

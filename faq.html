@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAQ | Telepact</title>
+  <meta name="description" content="Frequently asked Telepact API design questions and rationale.">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav-shell">
+      <a href="/" class="brand" aria-label="Telepact home">
+        <span class="brand-dot"></span>
+        <span>Telepact</span>
+      </a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="/index.html">Home</a>
+        <a href="/get-started.html">Get Started</a>
+        <a href="/why-telepact.html">Why Telepact</a>
+        <a href="/schema-guide.html">Schema Guide</a>
+        <a href="/ecosystem.html">Ecosystem</a>
+        <a href="/faq.html" class="active">FAQ</a>
+      </nav>
+      <a class="btn btn-small" href="https://github.com/telepact/telepact" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero container">
+      <p class="eyebrow" data-reveal>FAQ</p>
+      <h1 data-reveal>Design choices, explained.</h1>
+      <p class="hero-copy" data-reveal>
+        Telepact intentionally favors explicit schema modeling and forward-compatible evolution patterns over convenience abstractions that typically become long-term liabilities.
+      </p>
+    </section>
+
+    <section class="section container faq-list">
+      <details data-reveal open>
+        <summary>Why have both optional and nullable fields?</summary>
+        <p>Optional fields model absence (<code>undefined</code>-like shape), while nullable fields model explicit null values. The distinction matters for safe update semantics.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why are nullable arrays/objects not supported directly?</summary>
+        <p>Nullability uses <code>?</code> suffixes on type strings, while arrays/objects are JSON syntax forms. Telepact treats null as empty for scalar-like fields and uses collection emptiness for arrays/objects.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why no built-in 404-style error?</summary>
+        <p>Telepact encourages expressing absence as data (for example empty optional values) rather than transport-style status abstractions.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why no generic catch-all Bad Request error?</summary>
+        <p>Telepact prefers precise error/data modeling. Custom request-invalid cases should be explicit union members beside <code>Ok_</code>.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why are positional arguments unsupported?</summary>
+        <p>Argument structs reduce accidental breaking changes and better support backwards-compatible API evolution.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why no classic enum type?</summary>
+        <p>Union tags with struct payloads cover enum-like behavior while preserving future extension space.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why force response validation on servers?</summary>
+        <p>Always-on validation protects ecosystem type safety and surfaces server bugs early rather than silently propagating malformed data.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>If binary is needed, why not just gRPC?</summary>
+        <p>Telepact supports compact binary but avoids exposing ABI field IDs in the API schema by negotiating IDs at runtime.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why are non-<code>Ok_</code> result tags treated as errors?</summary>
+        <p>The result union has a clear convention: <code>Ok_</code> for success, others for non-okay outcomes. Naming error tags explicitly improves readability.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why must union tags map to structs?</summary>
+        <p>Struct payloads keep each branch extensible, enabling backwards-compatible additions over time.</p>
+      </details>
+
+      <details data-reveal>
+        <summary>Why can’t <code>@select_</code> omit function argument fields?</summary>
+        <p>Function-typed payloads are used as link-like call templates. Omitting arg fields would undermine stable, reusable call targets.</p>
+      </details>
+
+      <p class="quick-links" data-reveal>
+        Read full FAQ text in the source reference:
+        <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/faq.md" target="_blank" rel="noopener noreferrer">faq.md</a>
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-shell">
+      <p>Telepact is open source under Apache License 2.0.</p>
+      <p><span id="year"></span> Telepact contributors.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

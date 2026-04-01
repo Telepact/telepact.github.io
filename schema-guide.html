@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Schema Guide | Telepact</title>
+  <meta name="description" content="A practical summary of Telepact schema writing: types, definitions, headers, errors, docstrings, and runtime additions.">
+  <script>document.documentElement.classList.add("js");</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="ambient ambient-a" aria-hidden="true"></div>
+  <div class="ambient ambient-b" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav-shell">
+      <a href="/" class="brand" aria-label="Telepact home">
+        <span class="brand-dot"></span>
+        <span>Telepact</span>
+      </a>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="/index.html">Home</a>
+        <a href="/get-started.html">Get Started</a>
+        <a href="/why-telepact.html">Why Telepact</a>
+        <a href="/schema-guide.html" class="active">Schema Guide</a>
+        <a href="/ecosystem.html">Ecosystem</a>
+        <a href="/faq.html">FAQ</a>
+      </nav>
+      <a class="btn btn-small" href="https://github.com/telepact/telepact" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero container">
+      <p class="eyebrow" data-reveal>Schema Writing Guide</p>
+      <h1 data-reveal>How Telepact schemas are structured.</h1>
+      <p class="hero-copy" data-reveal>
+        Telepact schemas are JSON arrays of definitions. They can describe API functions, shared data models, global errors, and request/response headers with docstring-driven documentation.
+      </p>
+    </section>
+
+    <section class="section container">
+      <div class="section-title" data-reveal>
+        <h2>Type expressions</h2>
+      </div>
+      <div class="compare-shell" data-reveal>
+        <table>
+          <thead>
+            <tr>
+              <th>Expression</th>
+              <th>Meaning</th>
+              <th>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>"boolean"</code>, <code>"integer"</code>, <code>"number"</code>, <code>"string"</code></td><td>Base scalar types</td><td>Append <code>?</code> to allow null.</td></tr>
+            <tr><td><code>["T"]</code></td><td>Array of T</td><td>Arrays themselves are never nullable.</td></tr>
+            <tr><td><code>{"string":"T"}</code></td><td>Map string keys to T</td><td>Object keys are always strings.</td></tr>
+            <tr><td><code>"any"</code></td><td>Any non-null JSON value</td><td><code>"any?"</code> allows null.</td></tr>
+            <tr><td><code>"struct.Name"</code> / <code>"union.Name"</code> / <code>"fn.name"</code></td><td>Reference a top-level definition</td><td>Function references are restricted inside top-level fn args.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-title" data-reveal>
+        <h2>Top-level definition kinds</h2>
+      </div>
+      <div class="card-grid two-col">
+        <article class="card" data-reveal>
+          <h3>Struct</h3>
+          <p>Product type with named fields. Optional fields use a <code>!</code> suffix in schema keys.</p>
+        </article>
+        <article class="card" data-reveal>
+          <h3>Union</h3>
+          <p>Tagged sum type. Each tag maps to a struct payload, including empty structs.</p>
+        </article>
+        <article class="card" data-reveal>
+          <h3>Function</h3>
+          <p>Request argument struct + result union. Result requires <code>Ok_</code>; non-<code>Ok_</code> tags represent non-okay outcomes.</p>
+        </article>
+        <article class="card" data-reveal>
+          <h3>Errors</h3>
+          <p>Global/systemic errors automatically merged into all user-defined function result unions.</p>
+        </article>
+        <article class="card" data-reveal>
+          <h3>Headers</h3>
+          <p>Request/response header schema where fields start with <code>@</code> and are implicitly optional.</p>
+        </article>
+        <article class="card" data-reveal>
+          <h3>Docstrings</h3>
+          <p>Use <code>"///"</code> on top-level defs and union tags. Markdown is supported in console rendering.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-title" data-reveal>
+        <h2>Runtime-appended definitions</h2>
+      </div>
+      <div class="stack-cards">
+        <article class="card" data-reveal>
+          <h3>Standard</h3>
+          <p>Utility functions and common validation errors (for example <code>fn.ping_</code>, <code>fn.api_</code>, parse/validation errors).</p>
+        </article>
+        <article class="card" data-reveal>
+          <h3>Auth</h3>
+          <p>If you define <code>struct.Auth_</code>, Telepact can include <code>@auth_</code> and auth-related standard errors.</p>
+        </article>
+        <article class="card" data-reveal>
+          <h3>Mock</h3>
+          <p>When serving via mock server, Telepact adds stubbing and verification functions for test workflows.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="code-layout two-up">
+        <article class="code-card" data-reveal>
+          <header>
+            <h3>Function definition</h3>
+            <button type="button" class="copy-btn" data-copy-target="def-fn">Copy</button>
+          </header>
+          <pre><code id="def-fn">{
+  "fn.compute": {
+    "x": "number",
+    "y": "number"
+  },
+  "->": [
+    { "Ok_": { "result": "number" } },
+    { "ErrorCannotDivideByZero": {} }
+  ]
+}</code></pre>
+        </article>
+        <article class="code-card" data-reveal>
+          <header>
+            <h3>Message exchange</h3>
+            <button type="button" class="copy-btn" data-copy-target="def-msg">Copy</button>
+          </header>
+          <pre><code id="def-msg">-> [{}, {"fn.compute": {"x": 6, "y": 3}}]
+<- [{}, {"Ok_": {"result": 2}}]</code></pre>
+        </article>
+      </div>
+      <p class="quick-links" data-reveal>
+        For complete schema details and full appendix definitions, see the
+        <a href="https://github.com/telepact/telepact/tree/main/skills/telepact-api/references/schema-guide.md" target="_blank" rel="noopener noreferrer">full reference</a>.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-shell">
+      <p>Telepact is open source under Apache License 2.0.</p>
+      <p><span id="year"></span> Telepact contributors.</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
