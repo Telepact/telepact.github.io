@@ -337,6 +337,37 @@
       font-family: var(--mono) !important;
       font-size: 0.85rem !important;
     }
+    .hero-payloads {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      max-width: 920px;
+      margin: 24px auto 0;
+    }
+    .payload-card {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      overflow: hidden;
+      text-align: left;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
+    }
+    .payload-card-header {
+      padding: 12px 16px;
+      background: rgba(0,0,0,0.2);
+      border-bottom: 1px solid var(--border);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .payload-card pre {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      font-size: 0.82rem !important;
+    }
 
     /* ============ Typing animation for hero ============ */
     .hero-code-window .typed-line {
@@ -447,6 +478,97 @@
       color: var(--text-muted);
     }
     .demo-annotation strong { color: var(--accent); }
+    .feature-accordion {
+      display: grid;
+      gap: 18px;
+      margin-top: 48px;
+    }
+    .feature-demo {
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      overflow: hidden;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .feature-demo[open] {
+      border-color: rgba(56,189,248,0.28);
+      box-shadow: 0 14px 48px rgba(0,0,0,0.28);
+    }
+    .feature-summary {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 24px;
+      cursor: pointer;
+    }
+    .feature-summary::-webkit-details-marker {
+      display: none;
+    }
+    .feature-summary h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .feature-summary p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 760px;
+    }
+    .feature-summary-note {
+      flex-shrink: 0;
+      border: 1px solid rgba(56,189,248,0.18);
+      background: rgba(56,189,248,0.08);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 20px;
+      padding: 0 24px 24px;
+    }
+    .feature-panel {
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      background: rgba(0,0,0,0.18);
+    }
+    .feature-panel-header {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      background: rgba(0,0,0,0.18);
+    }
+    .feature-panel pre {
+      margin: 0 !important;
+      border-radius: 0 !important;
+      background: transparent !important;
+      font-size: 0.8rem !important;
+    }
+    .feature-callout {
+      margin: 0 24px 24px;
+      padding: 16px 18px;
+      border-radius: 10px;
+      border: 1px solid rgba(56,189,248,0.14);
+      background: rgba(56,189,248,0.08);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .feature-callout strong,
+    .feature-callout code {
+      color: var(--accent);
+    }
 
     /* ============ Comparison Table ============ */
     .comparison-wrapper {
@@ -491,6 +613,40 @@
     .comparison-table .check { color: var(--green); font-size: 1.1rem; }
     .comparison-table .cross { color: var(--red); opacity: 0.6; font-size: 1.1rem; }
     .comparison-table .partial { color: var(--yellow); font-size: 1.1rem; }
+    .partial-tip {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: help;
+    }
+    .partial-tip .tooltip {
+      position: absolute;
+      left: 50%;
+      bottom: calc(100% + 10px);
+      transform: translateX(-50%) translateY(6px);
+      width: 220px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      line-height: 1.5;
+      text-transform: none;
+      letter-spacing: normal;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+      transition: opacity 0.2s, transform 0.2s;
+      z-index: 10;
+    }
+    .partial-tip:hover .tooltip,
+    .partial-tip:focus-within .tooltip {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
 
     /* ============ Code Tabs Section ============ */
     .code-tabs-container {
@@ -686,6 +842,12 @@
       .tools-grid { grid-template-columns: 1fr; }
       .lang-grid { grid-template-columns: repeat(2, 1fr); }
       .demo-grid { grid-template-columns: 1fr; }
+      .hero-payloads,
+      .feature-grid { grid-template-columns: 1fr; }
+      .feature-summary {
+        flex-direction: column;
+        align-items: flex-start;
+      }
       .navbar-links { display: none; }
       .navbar-links.open {
         display: flex;
@@ -762,7 +924,7 @@
         <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
         Get Started
       </a>
-      <a href="#demo" class="btn btn-secondary">See it in action &darr;</a>
+      <a href="#demo" class="btn btn-secondary">See examples</a>
     </div>
 
     <div class="hero-visual">
@@ -771,25 +933,35 @@
           <div class="code-window-dot"></div>
           <div class="code-window-dot"></div>
           <div class="code-window-dot"></div>
-          <span class="code-window-title">api.telepact.yaml</span>
+          <span class="code-window-title">hello.telepact.yaml</span>
         </div>
         <div class="code-window-body">
-          <pre><code class="language-yaml"># Define your API with simple YAML — works over HTTP, WebSocket, NATS, or any transport
-
-- fn.createUser:
-    name: "string"
-    email: "string"
-    role!: "string"         # Optional field
+          <pre><code class="language-yaml">- fn.helloWorld: {}
   ->:
     - Ok_:
-        user: "struct.User"
-        editProfile: "fn.updateUser"    # Hypermedia link
-    - ErrorEmailTaken: {}
-
-- struct.User:
-    id: "integer"
-    name: "string"
-    email: "string"</code></pre>
+        msg: string</code></pre>
+        </div>
+      </div>
+      <div class="hero-payloads">
+        <div class="payload-card">
+          <div class="payload-card-header">Request</div>
+          <pre><code class="language-json">[
+  {},
+  {
+    "fn.helloWorld": {}
+  }
+]</code></pre>
+        </div>
+        <div class="payload-card">
+          <div class="payload-card-header">Response</div>
+          <pre><code class="language-json">[
+  {},
+  {
+    "Ok_": {
+      "msg": "Hello world!"
+    }
+  }
+]</code></pre>
         </div>
       </div>
     </div>
@@ -831,16 +1003,78 @@
   <div class="container">
     <div class="fade-in">
       <div class="section-label">See It In Action</div>
-      <h2 class="section-title">Simple request, <span class="gradient-text">powerful response</span></h2>
-      <p class="section-subtitle">No special client library needed. Just send JSON, get JSON — with optional field selection and hypermedia links.</p>
+      <h2 class="section-title">Minimal schemas, <span class="gradient-text">feature by feature</span></h2>
+      <p class="section-subtitle">Each example below isolates one major capability with the smallest possible schema plus concrete request and response payloads.</p>
     </div>
-    <div class="demo-grid">
-      <div class="fade-in">
-        <div class="demo-panel">
-          <div class="demo-panel-header">
-            <span class="arrow">&#9654;</span> REQUEST &mdash; any HTTP client, any language
+    <div class="feature-accordion">
+      <details class="feature-demo fade-in" open>
+        <summary class="feature-summary">
+          <div>
+            <h3>1. Plain JSON calls</h3>
+            <p>Start with the smallest possible Telepact API: one function, one request, one response, all expressed as plain JSON.</p>
           </div>
-          <pre><code class="language-json">[
+          <span class="feature-summary-note">Schema + Request + Response</span>
+        </summary>
+        <div class="feature-grid">
+          <div class="feature-panel">
+            <div class="feature-panel-header">Schema</div>
+            <pre><code class="language-yaml">- fn.helloWorld: {}
+  ->:
+    - Ok_:
+        msg: string</code></pre>
+          </div>
+          <div class="feature-panel">
+            <div class="feature-panel-header">Request</div>
+            <pre><code class="language-json">[
+  {},
+  {
+    "fn.helloWorld": {}
+  }
+]</code></pre>
+          </div>
+          <div class="feature-panel">
+            <div class="feature-panel-header">Response</div>
+            <pre><code class="language-json">[
+  {},
+  {
+    "Ok_": {
+      "msg": "Hello world!"
+    }
+  }
+]</code></pre>
+          </div>
+        </div>
+        <div class="feature-callout">
+          <strong>No required client library.</strong> If you can serialize JSON and send bytes over HTTP, WebSockets, NATS, stdio, or another transport, you can call a Telepact API.
+        </div>
+      </details>
+
+      <details class="feature-demo fade-in">
+        <summary class="feature-summary">
+          <div>
+            <h3>2. Dynamic response shaping</h3>
+            <p>Clients can ask for fewer fields with <code>@select_</code>, which keeps responses lean without introducing a separate query language.</p>
+          </div>
+          <span class="feature-summary-note">Only return what you ask for</span>
+        </summary>
+        <div class="feature-grid">
+          <div class="feature-panel">
+            <div class="feature-panel-header">Schema</div>
+            <pre><code class="language-yaml">- struct.User:
+    id: integer
+    name: string
+    email: string
+    bio: string
+
+- fn.getUser:
+    id: integer
+  ->:
+    - Ok_:
+        user: struct.User</code></pre>
+          </div>
+          <div class="feature-panel">
+            <div class="feature-panel-header">Request</div>
+            <pre><code class="language-json">[
   {
     "@select_": {
       "Ok_": {
@@ -852,43 +1086,143 @@
     }
   },
   {
-    "fn.createUser": {
-      "name": "Alice",
-      "email": "alice@example.com"
+    "fn.getUser": {
+      "id": 42
     }
   }
 ]</code></pre>
-        </div>
-        <div class="demo-annotation">
-          <strong>@select_</strong> dynamically shapes the response — like GraphQL field selection, but expressed as plain JSON. No query language needed.
-        </div>
-      </div>
-      <div class="fade-in">
-        <div class="demo-panel">
-          <div class="demo-panel-header">
-            <span class="arrow" style="color: var(--green);">&#9664;</span> RESPONSE &mdash; only the fields you asked for
           </div>
-          <pre><code class="language-json">[
+          <div class="feature-panel">
+            <div class="feature-panel-header">Response</div>
+            <pre><code class="language-json">[
   {},
   {
     "Ok_": {
       "user": {
-        "name": "Alice",
-        "email": "alice@example.com"
-      },
-      "editProfile": {
-        "fn.updateUser": {
-          "id": 42
+        "name": "Ada",
+        "email": "ada@example.com"
+      }
+    }
+  }
+]</code></pre>
+          </div>
+        </div>
+        <div class="feature-callout">
+          <strong><code>@select_</code></strong> trims payloads at the protocol level. You get GraphQL-style field selection while staying inside JSON documents.
+        </div>
+      </details>
+
+      <details class="feature-demo fade-in">
+        <summary class="feature-summary">
+          <div>
+            <h3>3. Hypermedia without HTTP</h3>
+            <p>Responses can include pre-filled function calls, which act like links the client can follow next without building URLs or stitching arguments together.</p>
+          </div>
+          <span class="feature-summary-note">Link the next call</span>
+        </summary>
+        <div class="feature-grid">
+          <div class="feature-panel">
+            <div class="feature-panel-header">Schema</div>
+            <pre><code class="language-yaml">- fn.getTicket:
+    id: string
+  ->:
+    - Ok_:
+        title: string
+
+- fn.createTicket:
+    title: string
+  ->:
+    - Ok_:
+        id: string
+        view: fn.getTicket</code></pre>
+          </div>
+          <div class="feature-panel">
+            <div class="feature-panel-header">Request</div>
+            <pre><code class="language-json">[
+  {},
+  {
+    "fn.createTicket": {
+      "title": "Fix mobile layout"
+    }
+  }
+]</code></pre>
+          </div>
+          <div class="feature-panel">
+            <div class="feature-panel-header">Response</div>
+            <pre><code class="language-json">[
+  {},
+  {
+    "Ok_": {
+      "id": "ticket-7",
+      "view": {
+        "fn.getTicket": {
+          "id": "ticket-7"
         }
       }
     }
   }
 ]</code></pre>
+          </div>
         </div>
-        <div class="demo-annotation">
-          <strong>editProfile</strong> is a <em>link</em> — a pre-filled function call the client can invoke next. Hypermedia-driven navigation, no URL construction needed.
+        <div class="feature-callout">
+          <strong>Hypermedia stays transport-agnostic.</strong> The next action is encoded as data, so clients can navigate workflows without assuming HTTP routes or query strings.
         </div>
-      </div>
+      </details>
+
+      <details class="feature-demo fade-in">
+        <summary class="feature-summary">
+          <div>
+            <h3>4. Opt-in binary at runtime</h3>
+            <p>Clients can request binary negotiation by sending <code>@bin_</code>. The server responds with negotiated encoding metadata and can switch the body to compact binary without code generation.</p>
+          </div>
+          <span class="feature-summary-note">Client-side opt in</span>
+        </summary>
+        <div class="feature-grid">
+          <div class="feature-panel">
+            <div class="feature-panel-header">Schema</div>
+            <pre><code class="language-yaml">- struct.Event:
+    id: integer
+    title: string
+    status: string
+
+- fn.listEvents:
+    limit: integer
+  ->:
+    - Ok_:
+        events: [struct.Event]</code></pre>
+          </div>
+          <div class="feature-panel">
+            <div class="feature-panel-header">Request</div>
+            <pre><code class="language-json">[
+  {
+    "@bin_": [],
+    "@pac_": true
+  },
+  {
+    "fn.listEvents": {
+      "limit": 100
+    }
+  }
+]</code></pre>
+          </div>
+          <div class="feature-panel">
+            <div class="feature-panel-header">Response</div>
+            <pre><code class="language-bash">HTTP 200
+Content-Type: application/octet-stream
+
+headers: {
+  "@bin_": [38194217],
+  "@enc_": { ... negotiated field ids ... },
+  "@pac_": true
+}
+
+body: <MessagePack bytes></code></pre>
+          </div>
+        </div>
+        <div class="feature-callout">
+          <strong>Binary is opt-in from the client at runtime.</strong> No codegen is required, no server flag is needed, and for larger payloads it can often cut payload size and network latency roughly in half.
+        </div>
+      </details>
     </div>
   </div>
 </section>
@@ -919,9 +1253,9 @@
           <tr>
             <td>No transport restrictions</td>
             <td><span class="cross">&#10007;</span></td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">JSON-RPC is transport-agnostic in theory, but lack of support for metadata at the protocol level usually restrict JSON-RPC cases to transports that support headers, such as HTTP.</span></span></td>
             <td><span class="cross">&#10007;</span></td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">GraphQL can theoretically run over different transports, but the protocol itself has poor ergonimics, so in practice most use cases are restricted to what the client and server can agree on with library support, usually HTTP.</span></span></td>
             <td class="highlight"><span class="check">&#10003;</span></td>
           </tr>
           <tr>
@@ -934,7 +1268,7 @@
           </tr>
           <tr>
             <td>Type-safe generated code</td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">OpenAPI code generation exists, but quality and type coverage vary across generators and target languages.</span></span></td>
             <td><span class="cross">&#10007;</span></td>
             <td><span class="check">&#10003;</span></td>
             <td><span class="check">&#10003;</span></td>
@@ -945,7 +1279,7 @@
             <td><span class="check">&#10003;</span></td>
             <td><span class="check">&#10003;</span></td>
             <td><span class="cross">&#10007;</span></td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">GraphQL documents are text, but the query language is brittle to work with directly, so most use cases rely on dedicated graphql libraries.</span></span></td>
             <td class="highlight"><span class="check">&#10003;</span></td>
           </tr>
           <tr>
@@ -966,7 +1300,7 @@
           </tr>
           <tr>
             <td>Built-in API documentation</td>
-            <td><span class="partial">~</span></td>
+            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">OpenAPI tooling exists to generate documentation, but this documentation has to served out-of-band from the API itself.</span></span></td>
             <td><span class="cross">&#10007;</span></td>
             <td><span class="cross">&#10007;</span></td>
             <td><span class="check">&#10003;</span></td>
@@ -1000,37 +1334,22 @@
       <div class="code-tabs" role="tablist">
         <button class="code-tab active" onclick="switchTab(event, 'tab-schema')" role="tab">Schema</button>
         <button class="code-tab" onclick="switchTab(event, 'tab-python')" role="tab">Python Server</button>
-        <button class="code-tab" onclick="switchTab(event, 'tab-ts')" role="tab">TypeScript Client</button>
-        <button class="code-tab" onclick="switchTab(event, 'tab-go')" role="tab">Go Server</button>
-        <button class="code-tab" onclick="switchTab(event, 'tab-java')" role="tab">Java Server</button>
-        <button class="code-tab" onclick="switchTab(event, 'tab-curl')" role="tab">curl</button>
+        <button class="code-tab" onclick="switchTab(event, 'tab-ts')" role="tab">Vanilla TS Client</button>
+        <button class="code-tab" onclick="switchTab(event, 'tab-java')" role="tab">Java Client</button>
+        <button class="code-tab" onclick="switchTab(event, 'tab-go')" role="tab">Go Client + Codegen</button>
       </div>
 
       <!-- Schema -->
       <div id="tab-schema" class="code-tab-content active">
         <pre><code class="language-yaml"># divide.telepact.yaml
 
-- fn.divide:                     # Define a function
-    x: "integer"                 # Required argument
-    y: "integer"
-  ->:                            # Return type is a union
-    - Ok_:
-        result: "number"
-    - ErrorCannotDivideByZero: {}
-
-- fn.getUsers:
-    page!: "integer"             # Optional argument (note the !)
-    limit!: "integer"
+- fn.divide:
+    x: integer
+    y: integer
   ->:
     - Ok_:
-        users: ["struct.User"]   # Array of structs
-        total: "integer"
-
-- struct.User:                   # Define a reusable struct
-    id: "integer"
-    name: "string"
-    email: "string"
-    role!: "string"              # Optional field</code></pre>
+        result: number
+    - ErrorCannotDivideByZero: {}</code></pre>
       </div>
 
       <!-- Python -->
@@ -1064,119 +1383,105 @@ async def http_handler(request):
 
       <!-- TypeScript -->
       <div id="tab-ts" class="code-tab-content">
-        <pre><code class="language-typescript">import { Client, ClientOptions, Message, Serializer } from 'telepact';
+        <pre><code class="language-typescript">// No Telepact library required
 
-// Pluggable transport — use fetch, WebSocket, NATS, anything
-const adapter = async (m: Message, s: Serializer): Promise&lt;Message&gt; => {
-    const res = await fetch('/api/telepact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: s.serialize(m),
-    });
-    return s.deserialize(new Uint8Array(await res.arrayBuffer()));
-};
+const request = [
+  {},
+  {
+    "fn.divide": {
+      x: 10,
+      y: 2,
+    },
+  },
+];
 
-const client = new Client(adapter, new Serializer(), new ClientOptions());
+const response = await fetch("/api/telepact", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(request),
+});
 
-// Type-safe call with dynamic field selection
-const response = await client.call('fn.divide', { x: 10, y: 3 });
-console.log(response.body);
-// { "Ok_": { "result": 3.333... } }</code></pre>
-      </div>
+const [headers, body] = await response.json();
 
-      <!-- Go -->
-      <div id="tab-go" class="code-tab-content">
-        <pre><code class="language-go">package main
-
-import (
-    "github.com/telepact/telepact/lib/go/pkg/telepact"
-)
-
-func main() {
-    files := telepact.NewTelepactSchemaFiles("./api")
-    schema := telepact.NewTelepactSchemaFromFileJsonMap(files.FilenamesToJson)
-
-    handler := func(msg *telepact.Message) *telepact.Message {
-        fn := msg.GetBodyTarget()
-        args := msg.Body[fn].(map[string]any)
-
-        switch fn {
-        case "fn.divide":
-            x := args["x"].(float64)
-            y := args["y"].(float64)
-            if y == 0 {
-                return telepact.NewMessage(
-                    map[string]any{},
-                    map[string]any{"ErrorCannotDivideByZero": map[string]any{}},
-                )
-            }
-            return telepact.NewMessage(
-                map[string]any{},
-                map[string]any{"Ok_": map[string]any{"result": x / y}},
-            )
-        }
-        return nil
-    }
-
-    options := telepact.DefaultServerOptions()
-    options.AuthRequired = false
-    server := telepact.NewServer(schema, handler, options)
-    // Mount server.Process to any HTTP handler
+if (body.Ok_) {
+  console.log(body.Ok_.result);
+} else {
+  console.error(headers, body);
 }</code></pre>
       </div>
 
       <!-- Java -->
       <div id="tab-java" class="code-tab-content">
-        <pre><code class="language-java">import io.github.telepact.Message;
-import io.github.telepact.Server;
-import io.github.telepact.TelepactSchema;
-import io.github.telepact.TelepactSchemaFiles;
+        <pre><code class="language-java">import io.github.telepact.Client;
+import io.github.telepact.Message;
+import io.github.telepact.Serializer;
 
-var files = new TelepactSchemaFiles("./api");
-var schema = TelepactSchema.fromFileJsonMap(files.getFilenamesToJson());
+BiFunction&lt;Message, Serializer, Future&lt;Message&gt;&gt; adapter = (message, serializer) ->
+    CompletableFuture.supplyAsync(() -> {
+        var requestBytes = serializer.serialize(message);
+        var responseBytes = transport.send(requestBytes);
+        return serializer.deserialize(responseBytes);
+    });
 
-Server.Handler handler = (requestMessage) -> {
-    var fn = requestMessage.getBodyTarget();
-    var args = (Map&lt;String, Object&gt;) requestMessage.getBody().get(fn);
+var client = new Client(adapter, new Client.Options());
+var request = new Message(
+    Map.of(),
+    Map.of("fn.divide", Map.of("x", 10, "y", 2))
+);
+var response = client.request(request);
 
-    if ("fn.divide".equals(fn)) {
-        int x = (int) args.get("x");
-        int y = (int) args.get("y");
-        if (y == 0) {
-            return new Message(Map.of(), Map.of("ErrorCannotDivideByZero", Map.of()));
-        }
-        return new Message(Map.of(), Map.of("Ok_", Map.of("result", (double) x / y)));
-    }
-    throw new RuntimeException("Unknown function: " + fn);
-};
-
-var options = new Server.Options();
-options.setAuthRequired(false);
-var server = new Server(schema, handler, options);
-// Mount server.process() to any Java HTTP framework</code></pre>
+if ("Ok_".equals(response.getBodyTarget())) {
+    System.out.println(response.getBodyPayload().get("result"));
+}</code></pre>
       </div>
 
-      <!-- curl -->
-      <div id="tab-curl" class="code-tab-content">
-        <pre><code class="language-bash"># No client library needed — just curl!
+      <!-- Go -->
+      <div id="tab-go" class="code-tab-content">
+        <pre><code class="language-go">// First generate bindings from the schema:
+// telepact codegen --schema-dir ./api --lang go --package calcclient --out ./gen
 
-# Simple call
-curl -X POST https://api.example.com/telepact \
-  -H "Content-Type: application/json" \
-  -d '[{}, {"fn.divide": {"x": 10, "y": 3}}]'
+package main
 
-# Response:
-# [{}, {"Ok_": {"result": 3.3333333333333335}}]
+import (
+    "context"
+    "log"
 
-# With field selection (like GraphQL, but JSON)
-curl -X POST https://api.example.com/telepact \
-  -H "Content-Type: application/json" \
-  -d '[
-    {"@select_": {"Ok_": {"users": {"name": true, "email": true}}}},
-    {"fn.getUsers": {"page": 1, "limit": 10}}
-  ]'
+    calcclient "example.com/project/gen"
+    telepact "github.com/telepact/telepact/lib/go"
+)
 
-# Only returns the fields you asked for!</code></pre>
+func main() {
+    adapter := func(ctx context.Context, request telepact.Message, serializer *telepact.Serializer) (telepact.Message, error) {
+        requestBytes, err := serializer.Serialize(request)
+        if err != nil {
+            return telepact.Message{}, err
+        }
+
+        responseBytes, err := transport.Send(ctx, requestBytes)
+        if err != nil {
+            return telepact.Message{}, err
+        }
+
+        return serializer.Deserialize(responseBytes)
+    }
+
+    client, err := calcclient.NewClient(adapter, telepact.NewClientOptions())
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    response, err := client.Divide(context.Background(), calcclient.FnDivideArgs{
+        X: 10,
+        Y: 2,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    log.Printf("result=%v", response.Ok.Result)
+}</code></pre>
       </div>
     </div>
   </div>
