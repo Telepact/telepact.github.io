@@ -278,6 +278,27 @@
       margin: 0 auto 40px;
       line-height: 1.7;
     }
+    .beta-notice {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 100px;
+      background: var(--accent-glow);
+      border: 1px solid rgba(234, 179, 8, 0.25);
+      background: rgba(234, 179, 8, 0.08);
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 24px;
+      color: var(--yellow);
+    }
+    .beta-notice .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--yellow);
+      animation: pulse 2s infinite;
+    }
     .hero-buttons {
       display: flex;
       gap: 16px;
@@ -947,6 +968,10 @@
     <div class="hero-badge">
       <span class="dot"></span>
       Apache 2.0 &middot; Open Source
+    </div>
+    <div class="beta-notice">
+      <span class="dot"></span>
+      BETA
     </div>
     <h1>
       <span class="line">APIs that work</span>
