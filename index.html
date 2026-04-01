@@ -576,9 +576,13 @@
       border-radius: var(--radius);
       border: 1px solid var(--border);
       background: var(--bg-card);
-      overflow-x: auto;
-    }
-    .comparison-table {
+        overflow: hidden;
+      }
+      .comparison-scroll {
+        overflow-x: auto;
+        border-radius: inherit;
+      }
+      .comparison-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.9rem;
@@ -646,6 +650,39 @@
     .partial-tip:focus-within .tooltip {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
+    }
+    .has-floating-tooltips .partial-tip .tooltip {
+      display: none;
+    }
+    .floating-tooltip {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: min(220px, calc(100vw - 24px));
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: #0f172a;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      line-height: 1.5;
+      font-weight: 500;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.35);
+      pointer-events: none;
+      opacity: 0;
+      z-index: 250;
+      transform: translate(-50%, calc(-100% - 10px));
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+    .floating-tooltip[data-placement="bottom"] {
+      transform: translate(-50%, 10px);
+    }
+    .floating-tooltip.is-visible {
+      opacity: 1;
+      transform: translate(-50%, calc(-100% - 16px));
+    }
+    .floating-tooltip.is-visible[data-placement="bottom"] {
+      transform: translate(-50%, 16px);
     }
 
     /* ============ Code Tabs Section ============ */
@@ -1238,84 +1275,85 @@ body: <MessagePack bytes></code></pre>
       </p>
     </div>
     <div class="comparison-wrapper fade-in">
-      <table class="comparison-table">
-        <thead>
-          <tr>
-            <th>Capability</th>
-            <th>OpenAPI</th>
-            <th>JSON-RPC</th>
-            <th>gRPC</th>
-            <th>GraphQL</th>
-            <th class="highlight">Telepact</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>No transport restrictions</td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">JSON-RPC is transport-agnostic in theory, but lack of support for metadata at the protocol level usually restrict JSON-RPC cases to transports that support headers, such as HTTP.</span></span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">GraphQL can theoretically run over different transports, but the protocol itself has poor ergonimics, so in practice most use cases are restricted to what the client and server can agree on with library support, usually HTTP.</span></span></td>
-            <td class="highlight"><span class="check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>No required client libraries</td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td class="highlight"><span class="check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Type-safe generated code</td>
-            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">OpenAPI code generation exists, but quality and type coverage vary across generators and target languages.</span></span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td class="highlight"><span class="check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Human-readable wire format</td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">GraphQL documents are text, but the query language is brittle to work with directly, so most use cases rely on dedicated graphql libraries.</span></span></td>
-            <td class="highlight"><span class="check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Built-in binary serialization</td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td class="highlight"><span class="check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Dynamic response shaping</td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td class="highlight"><span class="check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Built-in API documentation</td>
-            <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">OpenAPI tooling exists to generate documentation, but this documentation has to served out-of-band from the API itself.</span></span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="check">&#10003;</span></td>
-            <td class="highlight"><span class="check">&#10003;</span></td>
-          </tr>
-          <tr>
-            <td>Built-in mocking</td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td><span class="cross">&#10007;</span></td>
-            <td class="highlight"><span class="check">&#10003;</span></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="comparison-scroll">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Capability</th>
+              <th>OpenAPI</th>
+              <th>JSON-RPC</th>
+              <th>gRPC</th>
+              <th>GraphQL</th>
+              <th class="highlight">Telepact</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>No transport restrictions</td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">JSON-RPC is transport-agnostic in theory, but lack of support for metadata at the protocol level usually restrict JSON-RPC cases to transports that support headers, such as HTTP.</span></span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">GraphQL can theoretically run over different transports, but the protocol itself has poor ergonimics, so in practice most use cases are restricted to what the client and server can agree on with library support, usually HTTP.</span></span></td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>No required client libraries</td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Type-safe generated code</td>
+              <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">OpenAPI code generation exists, but quality and type coverage vary across generators and target languages.</span></span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Human-readable wire format</td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">GraphQL documents are text, but the query language is brittle to work with directly, so most use cases rely on dedicated graphql libraries.</span></span></td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Built-in binary serialization</td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Dynamic response shaping</td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Built-in API documentation</td>
+              <td><span class="partial-tip" tabindex="0"><span class="partial">~</span><span class="tooltip">OpenAPI tooling exists to generate documentation, but this documentation has to served out-of-band from the API itself.</span></span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="check">&#10003;</span></td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+            </tr>
+            <tr>
+              <td>Built-in mocking</td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td><span class="cross">&#10007;</span></td>
+              <td class="highlight"><span class="check">&#10003;</span></td>
+            </tr>
+          </tbody>
+        </table>
     </div>
   </div>
 </section>
@@ -1627,8 +1665,84 @@ func main() {
     });
   });
 
+  function initializeComparisonTooltips() {
+    const partialTips = document.querySelectorAll('.partial-tip');
+
+    if (!partialTips.length) {
+      return;
+    }
+
+    const floatingTooltip = document.createElement('div');
+    floatingTooltip.id = 'comparison-tooltip';
+    floatingTooltip.className = 'floating-tooltip';
+    floatingTooltip.setAttribute('role', 'tooltip');
+    document.body.appendChild(floatingTooltip);
+    document.body.classList.add('has-floating-tooltips');
+
+    let activeTip = null;
+
+    const positionTooltip = (trigger) => {
+      const triggerRect = trigger.getBoundingClientRect();
+      const viewportPadding = 12;
+      const tooltipWidth = floatingTooltip.offsetWidth;
+      const tooltipHeight = floatingTooltip.offsetHeight;
+      const centeredX = triggerRect.left + (triggerRect.width / 2);
+      const minX = viewportPadding + (tooltipWidth / 2);
+      const maxX = window.innerWidth - viewportPadding - (tooltipWidth / 2);
+      const clampedX = Math.min(maxX, Math.max(minX, centeredX));
+      const showBelow = triggerRect.top < tooltipHeight + 24;
+
+      floatingTooltip.dataset.placement = showBelow ? 'bottom' : 'top';
+      floatingTooltip.style.left = `${clampedX}px`;
+      floatingTooltip.style.top = showBelow ? `${triggerRect.bottom}px` : `${triggerRect.top}px`;
+    };
+
+    const showTooltip = (trigger) => {
+      const sourceTooltip = trigger.querySelector('.tooltip');
+
+      if (!sourceTooltip) {
+        return;
+      }
+
+      activeTip = trigger;
+      floatingTooltip.textContent = sourceTooltip.textContent.trim();
+      positionTooltip(trigger);
+      floatingTooltip.classList.add('is-visible');
+    };
+
+    const hideTooltip = (trigger) => {
+      if (!activeTip || (trigger && activeTip !== trigger)) {
+        return;
+      }
+
+      activeTip = null;
+      floatingTooltip.classList.remove('is-visible');
+    };
+
+    partialTips.forEach((trigger) => {
+      trigger.setAttribute('aria-describedby', 'comparison-tooltip');
+      trigger.addEventListener('mouseenter', () => showTooltip(trigger));
+      trigger.addEventListener('mouseleave', () => hideTooltip(trigger));
+      trigger.addEventListener('focus', () => showTooltip(trigger));
+      trigger.addEventListener('blur', () => hideTooltip(trigger));
+    });
+
+    window.addEventListener('scroll', () => {
+      if (activeTip) {
+        positionTooltip(activeTip);
+      }
+    }, true);
+
+    window.addEventListener('resize', () => {
+      if (activeTip) {
+        positionTooltip(activeTip);
+      }
+    });
+  }
+
   // Re-highlight code blocks on load
   document.addEventListener('DOMContentLoaded', () => {
+    initializeComparisonTooltips();
     Prism.highlightAll();
   });
 </script>
